@@ -1,0 +1,295 @@
+nick@ksvm:~$ ./example1_v0.7.0.sh test/
+------------------------------------------------------------------------
+Running example in directory /home/nick/test
+
+KCP version: kcp version v1.24.3+kcp-v0.11.0
+KCP location: /home/nick/kcp/bin/kcp
+
+KubeStellar version: {"major":"1","minor":"24","gitVersion":"v1.24.3+kcp-v0.2.1-1611-gdc6a351dabfc35","gitCommit":"dc6a351d","gitTreeState":"clean","buildDate":"2023-09-28T20:40:20Z","goVersion":"go1.21.1","compiler":"gc","platform":"linux/amd64"}
+KubeStellar location: /home/nick/ks/kubestellar/bin/kubestellar
+
+------------------------------------------------------------------------
+*** Make kind clusters florin and guilder
+Creating cluster "florin" ...
+ ✓ Ensuring node image (kindest/node:v1.24.0) 🖼
+ ✓ Preparing nodes 📦  
+ ✓ Writing configuration 📜 
+ ✓ Starting control-plane 🕹️ 
+ ✓ Installing CNI 🔌 
+ ✓ Installing StorageClass 💾 
+Set kubectl context to "kind-florin"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-florin
+
+Have a nice day! 👋
+Creating cluster "guilder" ...
+ ✓ Ensuring node image (kindest/node:v1.24.0) 🖼
+ ✓ Preparing nodes 📦  
+ ✓ Writing configuration 📜 
+ ✓ Starting control-plane 🕹️ 
+ ✓ Installing CNI 🔌 
+ ✓ Installing StorageClass 💾 
+Set kubectl context to "kind-guilder"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-guilder
+
+Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
+************************************************************************
+*** Start KCP in screen session "kcp"
+************************************************************************
+*** Wait 30 seconds, starting at Fri Sep 29 01:53:35 PM EDT 2023
+*** Initialize KubeStellar as a bare process
+Finished augmenting root:compute for KubeStellar
+Workspace "espw" (type root:organization) created. Waiting for it to be ready...
+Workspace "espw" (type root:organization) is ready to use.
+Current workspace is "root:espw" (type root:organization).
+Finished populating the espw with kubestellar apiexports
+*** Make inventory management workspace
+Current workspace is "root".
+Workspace "imw-1" (type root:organization) created. Waiting for it to be ready...
+Workspace "imw-1" (type root:organization) is ready to use.
+*** Add labels to florin and guilder
+Current workspace is "root:imw-1".
+--- current directory is /home/nick/test
+current ws is root:imw-1
+imw is .
+current cwsi is root:imw-1
+apibinding edge.kubestellar.io created. Waiting to successfully bind ...
+edge.kubestellar.io created and bound.
+bound apiexport root:espw:edge.kubestellar.io into root:imw-1:edge.kubestellar.io
+synctarget.edge.kubestellar.io/florin created
+location.edge.kubestellar.io/florin created
+synctarget.edge.kubestellar.io/florin labeled
+location.edge.kubestellar.io/florin labeled
+synctarget.edge.kubestellar.io/florin labeled
+location.edge.kubestellar.io/florin labeled
+--- current directory is /home/nick/test
+current ws is root:imw-1
+imw is .
+current cwsi is root:imw-1
+edge.kubestellar.io apibinding exists in workspace root:imw-1
+synctarget.edge.kubestellar.io/guilder created
+location.edge.kubestellar.io/guilder created
+synctarget.edge.kubestellar.io/guilder labeled
+location.edge.kubestellar.io/guilder labeled
+synctarget.edge.kubestellar.io/guilder labeled
+location.edge.kubestellar.io/guilder labeled
+synctarget.edge.kubestellar.io/guilder labeled
+location.edge.kubestellar.io/guilder labeled
+*** Show florin location object description
+Name:         florin
+Namespace:    
+Labels:       env=prod
+              loc-name=florin
+Annotations:  kcp.io/cluster: 1vpog6tj67uxsd8r
+API Version:  edge.kubestellar.io/v1alpha1
+Kind:         Location
+Metadata:
+  Creation Timestamp:  2023-09-29T17:54:14Z
+  Generation:          1
+  Resource Version:    935
+  UID:                 91870fc3-c4ce-4bd8-84cb-16d2ba9d21b3
+Spec:
+  Instance Selector:
+    Match Labels:
+      Id:  florin
+  Resource:
+    Group:     edge.kubestellar.io
+    Resource:  synctargets
+    Version:   v1alpha1
+Events:        <none>
+************************************************************************
+*** Make mailbox-controller in screen session "mbx"
+************************************************************************
+*** Wait 60 seconds, starting at Fri Sep 29 01:54:15 PM EDT 2023
+*** Show mailbox workspaces
+Current workspace is "root:espw".
+NAME                                                       TYPE        REGION   PHASE   URL                                                 AGE
+1vpog6tj67uxsd8r-mb-0e0b02a0-bef3-4577-ab70-ec1959bb4276   universal            Ready   https://10.0.0.226:6443/clusters/1d9d62x7t6uy8tk6   60s
+1vpog6tj67uxsd8r-mb-28a1076b-349b-41d3-bd5a-f2c79cd41023   universal            Ready   https://10.0.0.226:6443/clusters/1524kmmx0epjfp67   60s
+NAME                                                       SYNCTARGET   CLUSTER
+1vpog6tj67uxsd8r-mb-0e0b02a0-bef3-4577-ab70-ec1959bb4276   guilder      1d9d62x7t6uy8tk6
+1vpog6tj67uxsd8r-mb-28a1076b-349b-41d3-bd5a-f2c79cd41023   florin       1524kmmx0epjfp67
+* The guilder mailbox workspace name is 1vpog6tj67uxsd8r-mb-0e0b02a0-bef3-4577-ab70-ec1959bb4276
+* The florin mailbox workspace name is 1vpog6tj67uxsd8r-mb-28a1076b-349b-41d3-bd5a-f2c79cd41023
+*** Connect guilder and florin edge clusters to their mailbox workspace
+Current workspace is "root:imw-1".
+Current workspace is "root:espw".
+Creating service account "kubestellar-syncer-guilder-25cpnih2"
+Creating cluster role "kubestellar-syncer-guilder-25cpnih2" to give service account "kubestellar-syncer-guilder-25cpnih2"
+
+ 1. write and sync access to the synctarget "kubestellar-syncer-guilder-25cpnih2"
+ 2. write access to apiresourceimports.
+
+Creating or updating cluster role binding "kubestellar-syncer-guilder-25cpnih2" to bind service account "kubestellar-syncer-guilder-25cpnih2" to cluster role "kubestellar-syncer-guilder-25cpnih2".
+
+Wrote physical cluster manifest to guilder-syncer.yaml for namespace "kubestellar-syncer-guilder-25cpnih2". Use
+
+  KUBECONFIG=<pcluster-config> kubectl apply -f "guilder-syncer.yaml"
+
+to apply it. Use
+
+  KUBECONFIG=<pcluster-config> kubectl get deployment -n "kubestellar-syncer-guilder-25cpnih2" kubestellar-syncer-guilder-25cpnih2
+
+to verify the syncer pod is running.
+Current workspace is "root:espw".
+namespace/kubestellar-syncer-guilder-25cpnih2 created
+serviceaccount/kubestellar-syncer-guilder-25cpnih2 created
+secret/kubestellar-syncer-guilder-25cpnih2-token created
+clusterrole.rbac.authorization.k8s.io/kubestellar-syncer-guilder-25cpnih2 created
+clusterrolebinding.rbac.authorization.k8s.io/kubestellar-syncer-guilder-25cpnih2 created
+secret/kubestellar-syncer-guilder-25cpnih2 created
+deployment.apps/kubestellar-syncer-guilder-25cpnih2 created
+Current workspace is "root:imw-1".
+Current workspace is "root:espw".
+Creating service account "kubestellar-syncer-florin-1tl17sbv"
+Creating cluster role "kubestellar-syncer-florin-1tl17sbv" to give service account "kubestellar-syncer-florin-1tl17sbv"
+
+ 1. write and sync access to the synctarget "kubestellar-syncer-florin-1tl17sbv"
+ 2. write access to apiresourceimports.
+
+Creating or updating cluster role binding "kubestellar-syncer-florin-1tl17sbv" to bind service account "kubestellar-syncer-florin-1tl17sbv" to cluster role "kubestellar-syncer-florin-1tl17sbv".
+
+Wrote physical cluster manifest to florin-syncer.yaml for namespace "kubestellar-syncer-florin-1tl17sbv". Use
+
+  KUBECONFIG=<pcluster-config> kubectl apply -f "florin-syncer.yaml"
+
+to apply it. Use
+
+  KUBECONFIG=<pcluster-config> kubectl get deployment -n "kubestellar-syncer-florin-1tl17sbv" kubestellar-syncer-florin-1tl17sbv
+
+to verify the syncer pod is running.
+Current workspace is "root:espw".
+namespace/kubestellar-syncer-florin-1tl17sbv created
+serviceaccount/kubestellar-syncer-florin-1tl17sbv created
+secret/kubestellar-syncer-florin-1tl17sbv-token created
+clusterrole.rbac.authorization.k8s.io/kubestellar-syncer-florin-1tl17sbv created
+clusterrolebinding.rbac.authorization.k8s.io/kubestellar-syncer-florin-1tl17sbv created
+secret/kubestellar-syncer-florin-1tl17sbv created
+deployment.apps/kubestellar-syncer-florin-1tl17sbv created
+*** Show that syncer is running in kind-guilder context
+NAMESPACE                             NAME                                  READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system                           coredns                               2/2     2            2           2m14s
+kubestellar-syncer-guilder-25cpnih2   kubestellar-syncer-guilder-25cpnih2   1/1     1            1           16s
+local-path-storage                    local-path-provisioner                1/1     1            1           2m13s
+*** Make parent workspace my-org for common and special WMW
+Current workspace is "root".
+Workspace "my-org" (type root:organization) created. Waiting for it to be ready...
+Workspace "my-org" (type root:organization) is ready to use.
+Current workspace is "root:my-org" (type root:organization).
+*** Make common WMW wmw-c
+Current workspace is "root".
+Current workspace is "root:my-org".
+Workspace "wmw-c" (type root:universal) created. Waiting for it to be ready...
+Workspace "wmw-c" (type root:universal) is ready to use.
+Current workspace is "root:my-org:wmw-c" (type root:universal).
+apibinding.apis.kcp.io/bind-espw created
+apibinding.apis.kcp.io/bind-kubernetes created
+apibinding.apis.kcp.io/bind-apps created
+apibinding.apis.kcp.io/bind-autoscaling created
+apibinding.apis.kcp.io/bind-batch created
+apibinding.apis.kcp.io/bind-core.k8s.io created
+apibinding.apis.kcp.io/bind-discovery.k8s.io created
+apibinding.apis.kcp.io/bind-networking.k8s.io created
+apibinding.apis.kcp.io/bind-policy created
+apibinding.apis.kcp.io/bind-storage.k8s.io created
+*** Make workload objects in wmw-c workspace
+namespace/commonstuff created
+configmap/httpd-htdocs created
+customizer.edge.kubestellar.io/example-customizer created
+replicaset.apps/commond created
+*** Make EdgePlacement object
+edgeplacement.edge.kubestellar.io/edge-placement-c created
+*** Make special WMW wmw-w
+Current workspace is "root:my-org".
+Current workspace is "root".
+Current workspace is "root:my-org".
+Workspace "wmw-s" (type root:universal) created. Waiting for it to be ready...
+Workspace "wmw-s" (type root:universal) is ready to use.
+Current workspace is "root:my-org:wmw-s" (type root:universal).
+apibinding.apis.kcp.io/bind-espw created
+apibinding.apis.kcp.io/bind-kubernetes created
+apibinding.apis.kcp.io/bind-apps created
+apibinding.apis.kcp.io/bind-autoscaling created
+apibinding.apis.kcp.io/bind-batch created
+apibinding.apis.kcp.io/bind-core.k8s.io created
+apibinding.apis.kcp.io/bind-discovery.k8s.io created
+apibinding.apis.kcp.io/bind-networking.k8s.io created
+apibinding.apis.kcp.io/bind-policy created
+apibinding.apis.kcp.io/bind-storage.k8s.io created
+*** Make workload objects in wmw-s workspace
+namespace/specialstuff created
+configmap/httpd-htdocs created
+customizer.edge.kubestellar.io/example-customizer created
+deployment.apps/speciald created
+*** Make EdgePlacement object
+edgeplacement.edge.kubestellar.io/edge-placement-s created
+************************************************************************
+Make where-resolver in screen session "wr"
+************************************************************************
+*** Wait 45 seconds, starting at Fri Sep 29 01:55:58 PM EDT 2023
+*** Look at SinglePLacementSlice objects in wmw-c
+Current workspace is "root:my-org:wmw-c".
+apiVersion: v1
+items:
+- apiVersion: edge.kubestellar.io/v1alpha1
+  destinations:
+  - cluster: 1vpog6tj67uxsd8r
+    locationName: guilder
+    syncTargetName: guilder
+    syncTargetUID: 0e0b02a0-bef3-4577-ab70-ec1959bb4276
+  - cluster: 1vpog6tj67uxsd8r
+    locationName: florin
+    syncTargetName: florin
+    syncTargetUID: 28a1076b-349b-41d3-bd5a-f2c79cd41023
+  kind: SinglePlacementSlice
+  metadata:
+    annotations:
+      kcp.io/cluster: 33grvhhhh1p7ihew
+    creationTimestamp: "2023-09-29T17:55:58Z"
+    generation: 2
+    name: edge-placement-c
+    ownerReferences:
+    - apiVersion: edge.kubestellar.io/v1alpha1
+      kind: EdgePlacement
+      name: edge-placement-c
+      uid: 2067c656-679e-4be5-b24a-ecc593a02dee
+    resourceVersion: "1485"
+    uid: 86c8d3bd-d2a1-401e-8da9-fb7c0901fa05
+kind: List
+metadata:
+  resourceVersion: ""
+************************************************************************
+Make placement-translator in screen session "pt"
+************************************************************************
+*** Wait 120 seconds, starting at Fri Sep 29 01:56:43 PM EDT 2023
+*** Examine florin's SyncerConfig
+Current workspace is "root:espw".
+Current workspace is "root:espw:1vpog6tj67uxsd8r-mb-28a1076b-349b-41d3-bd5a-f2c79cd41023" (type root:universal).
+Error from server (NotFound): syncerconfigs.edge.kubestellar.io "the-one" not found
+*** Check florin namespaces and replicasets for workload
+NAME      STATUS   AGE
+default   Active   4m28s
+error: the server doesn't have a resource type "replicasets"
+*** Examine guilder's SyncerConfig
+Current workspace is "root:espw".
+Current workspace is "root:espw:1vpog6tj67uxsd8r-mb-0e0b02a0-bef3-4577-ab70-ec1959bb4276" (type root:universal).
+Error from server (NotFound): syncerconfigs.edge.kubestellar.io "the-one" not found
+*** Check guilder namespaces and replicasets for workload
+NAME      STATUS   AGE
+default   Active   4m29s
+error: the server doesn't have a resource type "deployments"
+*** Examine florin cluster
+The commonstuff namespace failed to appear in florin!
+NAMESPACE                            NAME                                                 READY   UP-TO-DATE   AVAILABLE   AGE
+NAMESPACE                            NAME                                                            DESIRED   CURRENT   READY   AGE
+*** Examine guilder cluster
+NAME                                  STATUS   AGE
+NAMESPACE                             NAME                                                  READY   UP-TO-DATE   AVAILABLE   AGE
+NAMESPACE                             NAME                                                            DESIRED   CURRENT   READY   AGE
+Error from server (NotFound): namespaces "commonstuff" not found
+*** Check common workload on florin cluster
+The common workload failed to come up on florin!
+nick@ksvm:~$ 
