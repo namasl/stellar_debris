@@ -65,12 +65,8 @@ screen -d -m -S kcp
 screen -S kcp -p 0 -X stuff "kcp start^M"
 echo "*** Wait for KCP to start"
 # test that KCP is running; once ws resource is available, exit code will be zero
-kubectl ws tree 2> /dev/null
-ii=$?
-while [ $ii -ne 0 ]; do
+while ! kubectl ws tree 2> /dev/null; do
   sleep 10
-  kubectl ws tree 2> /dev/null
-  ii=$?
 done
 
 echo "*** Initialize KubeStellar as a bare process"
