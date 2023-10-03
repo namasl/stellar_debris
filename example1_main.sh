@@ -125,11 +125,8 @@ KUBECONFIG=$WORKING_DIR/.kube/config kubectl --context kind-guilder get deploy -
 # Stage 2 of example
 ################################################################################
 
-echo "*** Make parent workspace my-org for common and special WMW"
-kubectl ws root
-kubectl ws create my-org --enter
-
 echo "*** Make common WMW wmw-c"
+kubectl ws root
 kubectl kubestellar ensure wmw wmw-c
 
 echo "*** Make workload objects in wmw-c workspace"
@@ -214,12 +211,21 @@ metadata:
 spec:
   locationSelectors:
   - matchLabels: {"env":"prod"}
-  namespaceSelector:
-    matchLabels: {"common":"si"}
-  nonNamespacedObjects:
+  downsync:
+  - apiGroup: ""
+    resources: [ configmaps ]
+    namespaceSelectors:
+    - matchLabels: {"common":"si"}
+    objectNames: [ httpd-htdocs ]
+  - apiGroup: apps
+    resources: [ replicasets ]
+    namespaceSelectors:
+    - matchLabels: {"common":"si"}
+    objectNames: [ "*" ]
   - apiGroup: apis.kcp.io
-    resources: [ "apibindings" ]
-    resourceNames: [ "bind-kubernetes", "bind-apps" ]
+    resources: [ apibindings ]
+    namespaceSelectors: []
+    objectNames: [ "bind-kubernetes", "bind-apps" ]
   upsync:
   - apiGroup: "group1.test"
     resources: ["sprockets", "flanges"]
@@ -232,7 +238,7 @@ EOF
 
 echo "*** Make special WMW wmw-w"
 
-kubectl ws root:my-org
+kubectl ws root
 kubectl kubestellar ensure wmw wmw-s
 
 echo "*** Make workload objects in wmw-s workspace"
@@ -317,12 +323,21 @@ metadata:
 spec:
   locationSelectors:
   - matchLabels: {"env":"prod","extended":"si"}
-  namespaceSelector: 
-    matchLabels: {"special":"si"}
-  nonNamespacedObjects:
+  downsync:
+  - apiGroup: ""
+    resources: [ configmaps ]
+    namespaceSelectors:
+    - matchLabels: {"special":"si"}
+    objectNames: [ "*" ]
+  - apiGroup: apps
+    resources: [ deployments ]
+    namespaceSelectors:
+    - matchLabels: {"special":"si"}
+    objectNames: [ speciald ]
   - apiGroup: apis.kcp.io
-    resources: [ "apibindings" ]
-    resourceNames: [ "bind-kubernetes" ]
+    resources: [ apibindings ]
+    namespaceSelectors: []
+    objectNames: [ "bind-kubernetes", "bind-apps" ]
   upsync:
   - apiGroup: "group1.test"
     resources: ["sprockets", "flanges"]
@@ -332,7 +347,6 @@ spec:
     resources: ["widgets"]
     names: ["*"]
 EOF
-
 
 echo "************************************************************************"
 echo '*** Run where-resolver in screen session "wr"'
@@ -344,7 +358,7 @@ echo "*** Wait 45 seconds, starting at $(date)"
 sleep 45
 
 echo "*** Look at SinglePLacementSlice objects in wmw-c"
-kubectl ws root:my-org:wmw-c
+kubectl ws root:wmw-c
 kubectl get SinglePlacementSlice -o yaml
 
 ################################################################################
@@ -361,7 +375,7 @@ echo "*** Wait 120 seconds, starting at $(date)"
 sleep 120
 
 echo "*** Examine florin's SyncerConfig"
-kubectl ws root:espw
+kubectl ws root
 kubectl ws $FLORIN_WS
 kubectl get SyncerConfig the-one -o yaml
 
@@ -370,7 +384,7 @@ kubectl get ns
 kubectl get replicasets -A
 
 echo "*** Examine guilder's SyncerConfig"
-kubectl ws root:espw
+kubectl ws root
 kubectl ws $GUILDER_WS
 kubectl get SyncerConfig the-one -o yaml
 
