@@ -63,8 +63,15 @@ echo "************************************************************************"
 export KUBECONFIG=$WORKING_DIR/.kcp/admin.kubeconfig
 screen -d -m -S kcp
 screen -S kcp -p 0 -X stuff "kcp start^M"
-echo "*** Wait 30 seconds, starting at $(date)"
-sleep 30
+echo "*** Wait for KCP to start"
+# test that KCP is running; once ws resource is available, exit code will be zero
+kubectl ws tree 2> /dev/null
+ii=$?
+while [ $ii -ne 0 ]; do
+  sleep 10
+  kubectl ws tree 2> /dev/null
+  ii=$?
+done
 
 echo "*** Initialize KubeStellar as a bare process"
 kubestellar init
@@ -82,7 +89,7 @@ echo "*** Show florin location object description"
 kubectl describe location.edge.kubestellar.io florin
 
 echo "************************************************************************"
-echo '*** Make mailbox-controller in screen session "mbx"'
+echo '*** Run mailbox-controller in screen session "mbx"'
 echo "************************************************************************"
 screen -d -m -S mbx
 screen -S mbx -p 0 -X stuff "kubectl ws root:espw; mailbox-controller -v=2^M"
@@ -332,7 +339,7 @@ EOF
 
 
 echo "************************************************************************"
-echo 'Make where-resolver in screen session "wr"'
+echo '*** Run where-resolver in screen session "wr"'
 echo "************************************************************************"
 export KUBECONFIG=$WORKING_DIR/.kcp/admin.kubeconfig
 screen -d -m -S wr
@@ -349,7 +356,7 @@ kubectl get SinglePlacementSlice -o yaml
 ################################################################################
 
 echo "************************************************************************"
-echo 'Make placement-translator in screen session "pt"'
+echo '*** Run placement-translator in screen session "pt"'
 echo "************************************************************************"
 export KUBECONFIG=$WORKING_DIR/.kcp/admin.kubeconfig
 screen -d -m -S pt

@@ -13,6 +13,8 @@ cd $WORKING_DIR
 # ensure WORKING_DIR is an absolute path
 WORKING_DIR=$(pwd)
 
+export $WORKING_DIR/.kcp/admin.kubeconfig
+
 kubectl ws root
 kubectl delete workspace example-imw
 kubectl ws root:my-org
