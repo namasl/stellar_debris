@@ -359,7 +359,7 @@ echo "************************************************************************"
 export KUBECONFIG=$WORKING_DIR/.kcp/admin.kubeconfig
 screen -d -m -S wr
 screen -S wr -p 0 -X stuff "kubectl ws root:espw; kubestellar-where-resolver^M"
-echo "*** Wait for where resolver, starting at $(date)"
+echo "*** Wait for where-resolver, starting at $(date)"
 # test that where-resolver is ready by continuing once SinglePlacementSlice
 # resource is available
 sleep 10
@@ -402,7 +402,7 @@ for ii in "${mbxws[@]}"; do
   while [ $(kubectl get replicaset -A | grep commonstuff | sed -e 's/ \+/ /g' | cut -d " " -f 5) -lt 1 ]; do
     sleep 10
   done
-  echo "ReplicaSet running"
+  echo "commonstuff ReplicaSet running"
   echo 
 done
 # check for deployment in guilder
@@ -413,7 +413,7 @@ echo "Deployment resource exists"
 while [ $(kubectl get deploy -A | grep specialstuff | sed -e 's/ \+/ /g' | cut -d " " -f 5) -lt 1 ]; do
   sleep 10
 done
-echo "Deployment running"
+echo "specialstuff Deployment running"
 
 echo "*** Examine florin's SyncerConfig"
 kubectl ws root
