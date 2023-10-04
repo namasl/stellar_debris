@@ -1,0 +1,733 @@
+nick@ksvm:~/stellar_debris$ ~/stellar_debris/example1_main.sh ~/test/
+------------------------------------------------------------------------
+Running example in directory /home/nick/test
+
+KCP version: kcp version v1.24.3+kcp-v0.11.0
+KCP location: /usr/local/bin/kcp
+
+KubeStellar version: {"major":"1","minor":"24","gitVersion":"v1.24.3+kcp-v0.2.1-1637-g523ce181bd4b2b","gitCommit":"523ce181","gitTreeState":"clean","buildDate":"2023-09-29T18:30:50Z","goVersion":"go1.21.1","compiler":"gc","platform":"linux/amd64"}
+KubeStellar location: /home/nick/ks/bin/kubestellar
+
+------------------------------------------------------------------------
+*** Make kind clusters florin and guilder
+Creating cluster "florin" ...
+ ✓ Ensuring node image (kindest/node:v1.24.0) 🖼
+ ✓ Preparing nodes 📦  
+ ✓ Writing configuration 📜 
+ ✓ Starting control-plane 🕹️ 
+ ✓ Installing CNI 🔌 
+ ✓ Installing StorageClass 💾 
+Set kubectl context to "kind-florin"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-florin
+
+Have a nice day! 👋
+Creating cluster "guilder" ...
+ ✓ Ensuring node image (kindest/node:v1.24.0) 🖼
+ ✓ Preparing nodes 📦  
+ ✓ Writing configuration 📜 
+ ✓ Starting control-plane 🕹️ 
+ ✓ Installing CNI 🔌 
+ ✓ Installing StorageClass 💾 
+Set kubectl context to "kind-guilder"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-guilder
+
+Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
+************************************************************************
+*** Start KCP in screen session "kcp"
+************************************************************************
+*** Wait for KCP to start
+.
+└── root
+    └── compute
+
+*** Initialize KubeStellar as a bare process
+Finished augmenting root:compute for KubeStellar
+Workspace "espw" (type root:organization) created. Waiting for it to be ready...
+Workspace "espw" (type root:organization) is ready to use.
+Current workspace is "root:espw" (type root:organization).
+Finished populating the espw with kubestellar apiexports
+*** Make inventory management workspace
+Current workspace is "root".
+Workspace "imw-1" (type root:organization) created. Waiting for it to be ready...
+Workspace "imw-1" (type root:organization) is ready to use.
+*** Add labels to florin and guilder
+Current workspace is "root:imw-1".
+--- current directory is /home/nick/test
+current ws is root:imw-1
+imw is .
+current cwsi is root:imw-1
+apibinding edge.kubestellar.io created. Waiting to successfully bind ...
+edge.kubestellar.io created and bound.
+bound apiexport root:espw:edge.kubestellar.io into root:imw-1:edge.kubestellar.io
+synctarget.edge.kubestellar.io/florin created
+location.edge.kubestellar.io/florin created
+synctarget.edge.kubestellar.io/florin labeled
+location.edge.kubestellar.io/florin labeled
+synctarget.edge.kubestellar.io/florin labeled
+location.edge.kubestellar.io/florin labeled
+--- current directory is /home/nick/test
+current ws is root:imw-1
+imw is .
+current cwsi is root:imw-1
+edge.kubestellar.io apibinding exists in workspace root:imw-1
+synctarget.edge.kubestellar.io/guilder created
+location.edge.kubestellar.io/guilder created
+synctarget.edge.kubestellar.io/guilder labeled
+location.edge.kubestellar.io/guilder labeled
+synctarget.edge.kubestellar.io/guilder labeled
+location.edge.kubestellar.io/guilder labeled
+synctarget.edge.kubestellar.io/guilder labeled
+location.edge.kubestellar.io/guilder labeled
+*** Show florin location object description
+Name:         florin
+Namespace:    
+Labels:       env=prod
+              loc-name=florin
+Annotations:  kcp.io/cluster: 231dtczddsup5lt3
+API Version:  edge.kubestellar.io/v1alpha1
+Kind:         Location
+Metadata:
+  Creation Timestamp:  2023-10-04T03:42:59Z
+  Generation:          1
+  Resource Version:    934
+  UID:                 82721349-99dc-419d-8d4c-14b14a6e0e74
+Spec:
+  Instance Selector:
+    Match Labels:
+      Id:  florin
+  Resource:
+    Group:     edge.kubestellar.io
+    Resource:  synctargets
+    Version:   v1alpha1
+Events:        <none>
+************************************************************************
+*** Run mailbox-controller in screen session "mbx"
+************************************************************************
+*** Wait 60 seconds, starting at Tue Oct  3 11:43:01 PM EDT 2023
+*** Show mailbox workspaces
+Current workspace is "root".
+NAME                                                       TYPE           REGION   PHASE   URL                                                 AGE
+231dtczddsup5lt3-mb-5fce9651-048c-4402-b2a5-7ad9170595f5   organization            Ready   https://10.0.0.226:6443/clusters/17hiq3si8qmijbsh   60s
+231dtczddsup5lt3-mb-b5e9e798-4bdf-4f82-9f00-8889e4510645   organization            Ready   https://10.0.0.226:6443/clusters/2sob2rp40l6g3pcc   60s
+compute                                                    universal               Ready   https://10.0.0.226:6443/clusters/17au9nkjjhsvt51n   74s
+espw                                                       organization            Ready   https://10.0.0.226:6443/clusters/21m06c3excc5oh80   66s
+imw-1                                                      organization            Ready   https://10.0.0.226:6443/clusters/231dtczddsup5lt3   65s
+NAME                                                       SYNCTARGET   CLUSTER
+231dtczddsup5lt3-mb-5fce9651-048c-4402-b2a5-7ad9170595f5   guilder      17hiq3si8qmijbsh
+231dtczddsup5lt3-mb-b5e9e798-4bdf-4f82-9f00-8889e4510645   florin       2sob2rp40l6g3pcc
+compute                                                    <none>       17au9nkjjhsvt51n
+espw                                                       <none>       21m06c3excc5oh80
+imw-1                                                      <none>       231dtczddsup5lt3
+* The guilder mailbox workspace name is 231dtczddsup5lt3-mb-5fce9651-048c-4402-b2a5-7ad9170595f5
+* The florin mailbox workspace name is 231dtczddsup5lt3-mb-b5e9e798-4bdf-4f82-9f00-8889e4510645
+*** Connect guilder and florin edge clusters to their mailbox workspace
+Current workspace is "root:imw-1".
+Current workspace is "root:espw".
+Current workspace is "root".
+Creating service account "kubestellar-syncer-guilder-2h7sb18w"
+Creating cluster role "kubestellar-syncer-guilder-2h7sb18w" to give service account "kubestellar-syncer-guilder-2h7sb18w"
+
+ 1. write and sync access to the synctarget "kubestellar-syncer-guilder-2h7sb18w"
+ 2. write access to apiresourceimports.
+
+Creating or updating cluster role binding "kubestellar-syncer-guilder-2h7sb18w" to bind service account "kubestellar-syncer-guilder-2h7sb18w" to cluster role "kubestellar-syncer-guilder-2h7sb18w".
+
+Wrote physical cluster manifest to guilder-syncer.yaml for namespace "kubestellar-syncer-guilder-2h7sb18w". Use
+
+  KUBECONFIG=<pcluster-config> kubectl apply -f "guilder-syncer.yaml"
+
+to apply it. Use
+
+  KUBECONFIG=<pcluster-config> kubectl get deployment -n "kubestellar-syncer-guilder-2h7sb18w" kubestellar-syncer-guilder-2h7sb18w
+
+to verify the syncer pod is running.
+Current workspace is "root".
+namespace/kubestellar-syncer-guilder-2h7sb18w created
+serviceaccount/kubestellar-syncer-guilder-2h7sb18w created
+secret/kubestellar-syncer-guilder-2h7sb18w-token created
+clusterrole.rbac.authorization.k8s.io/kubestellar-syncer-guilder-2h7sb18w created
+clusterrolebinding.rbac.authorization.k8s.io/kubestellar-syncer-guilder-2h7sb18w created
+secret/kubestellar-syncer-guilder-2h7sb18w created
+deployment.apps/kubestellar-syncer-guilder-2h7sb18w created
+Current workspace is "root:imw-1".
+Current workspace is "root:espw".
+Current workspace is "root".
+Creating service account "kubestellar-syncer-florin-322njlyd"
+Creating cluster role "kubestellar-syncer-florin-322njlyd" to give service account "kubestellar-syncer-florin-322njlyd"
+
+ 1. write and sync access to the synctarget "kubestellar-syncer-florin-322njlyd"
+ 2. write access to apiresourceimports.
+
+Creating or updating cluster role binding "kubestellar-syncer-florin-322njlyd" to bind service account "kubestellar-syncer-florin-322njlyd" to cluster role "kubestellar-syncer-florin-322njlyd".
+
+Wrote physical cluster manifest to florin-syncer.yaml for namespace "kubestellar-syncer-florin-322njlyd". Use
+
+  KUBECONFIG=<pcluster-config> kubectl apply -f "florin-syncer.yaml"
+
+to apply it. Use
+
+  KUBECONFIG=<pcluster-config> kubectl get deployment -n "kubestellar-syncer-florin-322njlyd" kubestellar-syncer-florin-322njlyd
+
+to verify the syncer pod is running.
+Current workspace is "root".
+namespace/kubestellar-syncer-florin-322njlyd created
+serviceaccount/kubestellar-syncer-florin-322njlyd created
+secret/kubestellar-syncer-florin-322njlyd-token created
+clusterrole.rbac.authorization.k8s.io/kubestellar-syncer-florin-322njlyd created
+clusterrolebinding.rbac.authorization.k8s.io/kubestellar-syncer-florin-322njlyd created
+secret/kubestellar-syncer-florin-322njlyd created
+deployment.apps/kubestellar-syncer-florin-322njlyd created
+*** Show that syncer is running in kind-guilder context
+NAMESPACE                             NAME                                  READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system                           coredns                               2/2     2            2           2m4s
+kubestellar-syncer-guilder-2h7sb18w   kubestellar-syncer-guilder-2h7sb18w   1/1     1            1           17s
+local-path-storage                    local-path-provisioner                1/1     1            1           2m3s
+*** Make common WMW wmw-c
+Current workspace is "root".
+Workspace "wmw-c" (type root:organization) created. Waiting for it to be ready...
+Workspace "wmw-c" (type root:organization) is ready to use.
+Current workspace is "root:wmw-c" (type root:organization).
+apibinding.apis.kcp.io/bind-espw created
+apibinding.apis.kcp.io/bind-kubernetes created
+apibinding.apis.kcp.io/bind-apps created
+apibinding.apis.kcp.io/bind-autoscaling created
+apibinding.apis.kcp.io/bind-batch created
+apibinding.apis.kcp.io/bind-core.k8s.io created
+apibinding.apis.kcp.io/bind-discovery.k8s.io created
+apibinding.apis.kcp.io/bind-networking.k8s.io created
+apibinding.apis.kcp.io/bind-policy created
+apibinding.apis.kcp.io/bind-storage.k8s.io created
+*** Make workload objects in wmw-c workspace
+namespace/commonstuff created
+configmap/httpd-htdocs created
+customizer.edge.kubestellar.io/example-customizer created
+replicaset.apps/commond created
+*** Make EdgePlacement object
+edgeplacement.edge.kubestellar.io/edge-placement-c created
+*** Make special WMW wmw-w
+Current workspace is "root".
+Workspace "wmw-s" (type root:organization) created. Waiting for it to be ready...
+Workspace "wmw-s" (type root:organization) is ready to use.
+Current workspace is "root:wmw-s" (type root:organization).
+apibinding.apis.kcp.io/bind-espw created
+apibinding.apis.kcp.io/bind-kubernetes created
+apibinding.apis.kcp.io/bind-apps created
+apibinding.apis.kcp.io/bind-autoscaling created
+apibinding.apis.kcp.io/bind-batch created
+apibinding.apis.kcp.io/bind-core.k8s.io created
+apibinding.apis.kcp.io/bind-discovery.k8s.io created
+apibinding.apis.kcp.io/bind-networking.k8s.io created
+apibinding.apis.kcp.io/bind-policy created
+apibinding.apis.kcp.io/bind-storage.k8s.io created
+*** Make workload objects in wmw-s workspace
+namespace/specialstuff created
+configmap/httpd-htdocs created
+customizer.edge.kubestellar.io/example-customizer created
+deployment.apps/speciald created
+*** Make EdgePlacement object
+edgeplacement.edge.kubestellar.io/edge-placement-s created
+************************************************************************
+*** Run where-resolver in screen session "wr"
+************************************************************************
+*** Wait 45 seconds, starting at Tue Oct  3 11:44:40 PM EDT 2023
+*** Look at SinglePLacementSlice objects in wmw-c
+Current workspace is "root:wmw-c".
+apiVersion: v1
+items:
+- apiVersion: edge.kubestellar.io/v1alpha1
+  destinations:
+  - cluster: 231dtczddsup5lt3
+    locationName: florin
+    syncTargetName: florin
+    syncTargetUID: b5e9e798-4bdf-4f82-9f00-8889e4510645
+  - cluster: 231dtczddsup5lt3
+    locationName: guilder
+    syncTargetName: guilder
+    syncTargetUID: 5fce9651-048c-4402-b2a5-7ad9170595f5
+  kind: SinglePlacementSlice
+  metadata:
+    annotations:
+      kcp.io/cluster: re4kd0i347ep0zrb
+    creationTimestamp: "2023-10-04T03:44:40Z"
+    generation: 3
+    name: edge-placement-c
+    ownerReferences:
+    - apiVersion: edge.kubestellar.io/v1alpha1
+      kind: EdgePlacement
+      name: edge-placement-c
+      uid: 060d9ebf-bf81-4c10-b230-dd30c84d4e51
+    resourceVersion: "1416"
+    uid: a41a1522-9cf8-48fe-9fa8-4d6716ce0488
+kind: List
+metadata:
+  resourceVersion: ""
+************************************************************************
+*** Run placement-translator in screen session "pt"
+************************************************************************
+*** Wait 120 seconds, starting at Tue Oct  3 11:45:25 PM EDT 2023
+*** Examine florin's SyncerConfig
+Current workspace is "root".
+Current workspace is "root:231dtczddsup5lt3-mb-b5e9e798-4bdf-4f82-9f00-8889e4510645" (type root:organization).
+apiVersion: edge.kubestellar.io/v1alpha1
+kind: SyncerConfig
+metadata:
+  annotations:
+    kcp.io/cluster: 2sob2rp40l6g3pcc
+  creationTimestamp: "2023-10-04T03:45:26Z"
+  generation: 2
+  name: the-one
+  resourceVersion: "1423"
+  uid: 67d699f4-7162-4d00-b810-09a14223dccc
+spec:
+  namespaceScope: {}
+  namespacedObjects:
+  - apiVersion: v1
+    group: ""
+    objectsByNamespace:
+    - names:
+      - httpd-htdocs
+      namespace: commonstuff
+    resource: configmaps
+  - apiVersion: v1
+    group: apps
+    objectsByNamespace:
+    - names:
+      - commond
+      namespace: commonstuff
+    resource: replicasets
+  upsync:
+  - apiGroup: group1.test
+    names:
+    - george
+    - cosmo
+    namespaces:
+    - orbital
+    resources:
+    - sprockets
+    - flanges
+  - apiGroup: group2.test
+    names:
+    - william
+    resources:
+    - cogs
+status: {}
+*** Check florin namespaces and replicasets for workload
+NAME          STATUS   AGE
+commonstuff   Active   115s
+default       Active   4m25s
+NAMESPACE     NAME      DESIRED   CURRENT   READY   AGE
+commonstuff   commond   0         1         1       111s
+*** Examine guilder's SyncerConfig
+Current workspace is "root".
+Current workspace is "root:231dtczddsup5lt3-mb-5fce9651-048c-4402-b2a5-7ad9170595f5" (type root:organization).
+apiVersion: edge.kubestellar.io/v1alpha1
+kind: SyncerConfig
+metadata:
+  annotations:
+    kcp.io/cluster: 17hiq3si8qmijbsh
+  creationTimestamp: "2023-10-04T03:45:26Z"
+  generation: 4
+  name: the-one
+  resourceVersion: "1422"
+  uid: 80570dfe-24b1-40cd-8bf7-facd8b8a76ba
+spec:
+  namespaceScope: {}
+  namespacedObjects:
+  - apiVersion: v1
+    group: apps
+    objectsByNamespace:
+    - names:
+      - commond
+      namespace: commonstuff
+    resource: replicasets
+  - apiVersion: v1
+    group: ""
+    objectsByNamespace:
+    - names:
+      - kube-root-ca.crt
+      - httpd-htdocs
+      namespace: specialstuff
+    - names:
+      - httpd-htdocs
+      namespace: commonstuff
+    resource: configmaps
+  - apiVersion: v1
+    group: apps
+    objectsByNamespace:
+    - names:
+      - speciald
+      namespace: specialstuff
+    resource: deployments
+  upsync:
+  - apiGroup: group3.test
+    names:
+    - '*'
+    resources:
+    - widgets
+  - apiGroup: group1.test
+    names:
+    - george
+    - cosmo
+    namespaces:
+    - orbital
+    resources:
+    - sprockets
+    - flanges
+  - apiGroup: group2.test
+    names:
+    - william
+    resources:
+    - cogs
+status: {}
+*** Check guilder namespaces and replicasets for workload
+NAME           STATUS   AGE
+commonstuff    Active   114s
+default        Active   4m25s
+specialstuff   Active   115s
+NAMESPACE      NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+specialstuff   deployment.apps/speciald   1/0     1            1           111s
+
+NAMESPACE     NAME                      DESIRED   CURRENT   READY   AGE
+commonstuff   replicaset.apps/commond   0         1         1       110s
+*** Examine florin cluster
+NAME                                 STATUS   AGE
+commonstuff                          Active   113s
+default                              Active   5m12s
+kube-node-lease                      Active   5m13s
+kube-public                          Active   5m13s
+kube-system                          Active   5m13s
+kubestellar-syncer-florin-322njlyd   Active   2m52s
+local-path-storage                   Active   5m9s
+NAMESPACE                            NAME                                                 READY   UP-TO-DATE   AVAILABLE   AGE
+NAMESPACE                            NAME                                                            DESIRED   CURRENT   READY   AGE
+commonstuff                          replicaset.apps/commond                                         1         1         1       96s
+*** Examine guilder cluster
+NAME                                  STATUS   AGE
+commonstuff                           Active   113s
+specialstuff                          Active   113s
+NAMESPACE                             NAME                                                  READY   UP-TO-DATE   AVAILABLE   AGE
+specialstuff                          deployment.apps/speciald                              1/1     1            1           94s
+NAMESPACE                             NAME                                                             DESIRED   CURRENT   READY   AGE
+commonstuff                           replicaset.apps/commond                                          1         1         1       94s
+specialstuff                          replicaset.apps/speciald-c4fddf66                                1         1         1       94s
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  annotations:
+    edge.kubestellar.io/customizer: example-customizer
+    edge.kubestellar.io/downsynced: ReplicaSet/commonstuff/commond
+    kcp.io/cluster: 17hiq3si8qmijbsh
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"ReplicaSet","metadata":{"annotations":{"edge.kubestellar.io/customizer":"example-customizer"},"name":"commond","namespace":"commonstuff"},"spec":{"selector":{"matchLabels":{"app":"common"}},"template":{"metadata":{"labels":{"app":"common"}},"spec":{"containers":[{"env":[{"name":"EXAMPLE_VAR","value":"example value"}],"image":"library/httpd:2.4","name":"httpd","ports":[{"containerPort":80,"hostPort":8081,"name":"http","protocol":"TCP"}],"volumeMounts":[{"mountPath":"/usr/local/apache2/htdocs","name":"htdocs","readOnly":true}]}],"volumes":[{"configMap":{"name":"httpd-htdocs","optional":false},"name":"htdocs"}]}}}}
+  creationTimestamp: "2023-10-04T03:45:52Z"
+  generation: 1
+  labels:
+    edge.kubestellar.io/projected: "yes"
+  name: commond
+  namespace: commonstuff
+  resourceVersion: "802"
+  uid: 943b1e0f-978e-4538-a652-ffa8c324aec2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: common
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: common
+    spec:
+      containers:
+      - env:
+        - name: EXAMPLE_VAR
+          value: env is prod
+        image: library/httpd:2.4
+        imagePullPolicy: IfNotPresent
+        name: httpd
+        ports:
+        - containerPort: 80
+          hostPort: 8081
+          name: http
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /usr/local/apache2/htdocs
+          name: htdocs
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: httpd-htdocs
+          optional: false
+        name: htdocs
+status:
+  availableReplicas: 1
+  fullyLabeledReplicas: 1
+  observedGeneration: 1
+  readyReplicas: 1
+  replicas: 1
+*** Check common workload on florin cluster
+<!DOCTYPE html>
+<html>
+  <body>
+    This is a common web site.
+    Running in florin.
+  </body>
+</html>
+*** Check special workload on guilder cluster
+<!DOCTYPE html>
+<html>
+  <body>
+    This is a special web site.
+    Running in guilder.
+  </body>
+</html>
+*** Check common workload on guilder cluster
+<!DOCTYPE html>
+<html>
+  <body>
+    This is a common web site.
+    Running in guilder.
+  </body>
+</html>
+*** Check wmw-c ReplicaSet
+Current workspace is "root:wmw-c".
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  annotations:
+    edge.kubestellar.io/customizer: example-customizer
+    kcp.io/cluster: re4kd0i347ep0zrb
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"ReplicaSet","metadata":{"annotations":{"edge.kubestellar.io/customizer":"example-customizer"},"name":"commond","namespace":"commonstuff"},"spec":{"selector":{"matchLabels":{"app":"common"}},"template":{"metadata":{"labels":{"app":"common"}},"spec":{"containers":[{"env":[{"name":"EXAMPLE_VAR","value":"example value"}],"image":"library/httpd:2.4","name":"httpd","ports":[{"containerPort":80,"hostPort":8081,"name":"http","protocol":"TCP"}],"volumeMounts":[{"mountPath":"/usr/local/apache2/htdocs","name":"htdocs","readOnly":true}]}],"volumes":[{"configMap":{"name":"httpd-htdocs","optional":false},"name":"htdocs"}]}}}}
+  creationTimestamp: "2023-10-04T03:44:38Z"
+  generation: 1
+  name: commond
+  namespace: commonstuff
+  resourceVersion: "1292"
+  uid: 52a180ef-6908-4ebe-acc7-7ca15a6f4f25
+spec:
+  selector:
+    matchLabels:
+      app: common
+  template:
+    metadata:
+      labels:
+        app: common
+    spec:
+      containers:
+      - env:
+        - name: EXAMPLE_VAR
+          value: example value
+        image: library/httpd:2.4
+        name: httpd
+        ports:
+        - containerPort: 80
+          hostPort: 8081
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /usr/local/apache2/htdocs
+          name: htdocs
+          readOnly: true
+      volumes:
+      - configMap:
+          name: httpd-htdocs
+          optional: false
+        name: htdocs
+*** Check status section of speciald Deployment
+Current workspace is "root:wmw-s".
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    edge.kubestellar.io/customizer: example-customizer
+    kcp.io/cluster: revmh1oegpj2nz6n
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"edge.kubestellar.io/customizer":"example-customizer"},"name":"speciald","namespace":"specialstuff"},"spec":{"selector":{"matchLabels":{"app":"special"}},"template":{"metadata":{"labels":{"app":"special"}},"spec":{"containers":[{"env":[{"name":"EXAMPLE_VAR","value":"example value"}],"image":"library/httpd:2.4","name":"httpd","ports":[{"containerPort":80,"hostPort":8082,"name":"http","protocol":"TCP"}],"volumeMounts":[{"mountPath":"/usr/local/apache2/htdocs","name":"htdocs","readOnly":true}]}],"volumes":[{"configMap":{"name":"httpd-htdocs","optional":false},"name":"htdocs"}]}}}}
+  creationTimestamp: "2023-10-04T03:44:40Z"
+  generation: 1
+  name: speciald
+  namespace: specialstuff
+  resourceVersion: "1411"
+  uid: e9b2d24a-106f-490a-8c3c-83aee1658f27
+spec:
+  selector:
+    matchLabels:
+      app: special
+  template:
+    metadata:
+      labels:
+        app: special
+    spec:
+      containers:
+      - env:
+        - name: EXAMPLE_VAR
+          value: example value
+        image: library/httpd:2.4
+        name: httpd
+        ports:
+        - containerPort: 80
+          hostPort: 8082
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /usr/local/apache2/htdocs
+          name: htdocs
+          readOnly: true
+      volumes:
+      - configMap:
+          name: httpd-htdocs
+          optional: false
+        name: htdocs
+*** Check wmw-c EdgePlacement
+Current workspace is "root:wmw-c".
+apiVersion: v1
+items:
+- apiVersion: edge.kubestellar.io/v1alpha1
+  kind: EdgePlacement
+  metadata:
+    annotations:
+      kcp.io/cluster: re4kd0i347ep0zrb
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"edge.kubestellar.io/v1alpha1","kind":"EdgePlacement","metadata":{"annotations":{},"name":"edge-placement-c"},"spec":{"downsync":[{"apiGroup":"","namespaceSelectors":[{"matchLabels":{"common":"si"}}],"objectNames":["httpd-htdocs"],"resources":["configmaps"]},{"apiGroup":"apps","namespaceSelectors":[{"matchLabels":{"common":"si"}}],"objectNames":["*"],"resources":["replicasets"]},{"apiGroup":"apis.kcp.io","namespaceSelectors":[],"objectNames":["bind-kubernetes","bind-apps"],"resources":["apibindings"]}],"locationSelectors":[{"matchLabels":{"env":"prod"}}],"upsync":[{"apiGroup":"group1.test","names":["george","cosmo"],"namespaces":["orbital"],"resources":["sprockets","flanges"]},{"apiGroup":"group2.test","names":["william"],"resources":["cogs"]}]}}
+    creationTimestamp: "2023-10-04T03:44:38Z"
+    generation: 1
+    name: edge-placement-c
+    resourceVersion: "1293"
+    uid: 060d9ebf-bf81-4c10-b230-dd30c84d4e51
+  spec:
+    downsync:
+    - apiGroup: ""
+      namespaceSelectors:
+      - matchLabels:
+          common: si
+      objectNames:
+      - httpd-htdocs
+      resources:
+      - configmaps
+    - apiGroup: apps
+      namespaceSelectors:
+      - matchLabels:
+          common: si
+      objectNames:
+      - '*'
+      resources:
+      - replicasets
+    - apiGroup: apis.kcp.io
+      namespaceSelectors: []
+      objectNames:
+      - bind-kubernetes
+      - bind-apps
+      resources:
+      - apibindings
+    locationSelectors:
+    - matchLabels:
+        env: prod
+    upsync:
+    - apiGroup: group1.test
+      names:
+      - george
+      - cosmo
+      namespaces:
+      - orbital
+      resources:
+      - sprockets
+      - flanges
+    - apiGroup: group2.test
+      names:
+      - william
+      resources:
+      - cogs
+kind: List
+metadata:
+  resourceVersion: ""
+*** Check wmw-s EdgePlacement
+Current workspace is "root:wmw-s".
+apiVersion: v1
+items:
+- apiVersion: edge.kubestellar.io/v1alpha1
+  kind: EdgePlacement
+  metadata:
+    annotations:
+      kcp.io/cluster: revmh1oegpj2nz6n
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"edge.kubestellar.io/v1alpha1","kind":"EdgePlacement","metadata":{"annotations":{},"name":"edge-placement-s"},"spec":{"downsync":[{"apiGroup":"","namespaceSelectors":[{"matchLabels":{"special":"si"}}],"objectNames":["*"],"resources":["configmaps"]},{"apiGroup":"apps","namespaceSelectors":[{"matchLabels":{"special":"si"}}],"objectNames":["speciald"],"resources":["deployments"]},{"apiGroup":"apis.kcp.io","namespaceSelectors":[],"objectNames":["bind-kubernetes","bind-apps"],"resources":["apibindings"]}],"locationSelectors":[{"matchLabels":{"env":"prod","extended":"si"}}],"upsync":[{"apiGroup":"group1.test","names":["george","cosmo"],"namespaces":["orbital"],"resources":["sprockets","flanges"]},{"apiGroup":"group3.test","names":["*"],"resources":["widgets"]}]}}
+    creationTimestamp: "2023-10-04T03:44:40Z"
+    generation: 1
+    name: edge-placement-s
+    resourceVersion: "1412"
+    uid: b87c7e37-d2b6-4e51-acdd-82cbfc6adf86
+  spec:
+    downsync:
+    - apiGroup: ""
+      namespaceSelectors:
+      - matchLabels:
+          special: si
+      objectNames:
+      - '*'
+      resources:
+      - configmaps
+    - apiGroup: apps
+      namespaceSelectors:
+      - matchLabels:
+          special: si
+      objectNames:
+      - speciald
+      resources:
+      - deployments
+    - apiGroup: apis.kcp.io
+      namespaceSelectors: []
+      objectNames:
+      - bind-kubernetes
+      - bind-apps
+      resources:
+      - apibindings
+    locationSelectors:
+    - matchLabels:
+        env: prod
+        extended: si
+    upsync:
+    - apiGroup: group1.test
+      names:
+      - george
+      - cosmo
+      namespaces:
+      - orbital
+      resources:
+      - sprockets
+      - flanges
+    - apiGroup: group3.test
+      names:
+      - '*'
+      resources:
+      - widgets
+kind: List
+metadata:
+  resourceVersion: ""
+*** Show workspace structure
+Current workspace is "root".
+.
+└── root
+    ├── 231dtczddsup5lt3-mb-5fce9651-048c-4402-b2a5-7ad9170595f5
+    ├── 231dtczddsup5lt3-mb-b5e9e798-4bdf-4f82-9f00-8889e4510645
+    ├── compute
+    ├── espw
+    ├── imw-1
+    ├── wmw-c
+    └── wmw-s
+
+*** DONE
+nick@ksvm:~/stellar_debris$
