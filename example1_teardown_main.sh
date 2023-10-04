@@ -13,7 +13,7 @@ cd $WORKING_DIR
 # ensure WORKING_DIR is an absolute path
 WORKING_DIR=$(pwd)
 
-export $WORKING_DIR/.kcp/admin.kubeconfig
+export KUBE_CONFIG="$WORKING_DIR/.kcp/admin.kubeconfig"
 
 GUILDER_WS=$(kubectl get Workspace -o json | jq -r '.items | .[] | .metadata | select(.annotations ["edge.kubestellar.io/sync-target-name"] == "guilder") | .name')
 FLORIN_WS=$(kubectl get Workspace -o json | jq -r '.items | .[] | .metadata | select(.annotations ["edge.kubestellar.io/sync-target-name"] == "florin") | .name')
