@@ -460,4 +460,28 @@ while ! curl http://localhost:8096 &> /dev/null; do
 done
 curl http://localhost:8096
 
+################################################################################
+# Stage 5 of example
+################################################################################
+
+echo "*** Check wmw-c ReplicaSet"
+kubectl ws root:wmw-c
+kubectl get rs -n commonstuff commond -o yaml
+
+echo "*** Check status section of speciald Deployment"
+kubectl ws root:wmw-s
+kubectl get deploy -n specialstuff speciald -o yaml
+
+echo "*** Check wmw-c EdgePlacement"
+kubectl ws root:wmw-c
+kubectl get EdgePlacement -o yaml
+
+echo "*** Check wmw-s EdgePlacement"
+kubectl ws root:wmw-s
+kubectl get EdgePlacement -o yaml
+
+echo "*** Show workspace structure"
+kubectl ws root
+kubectl ws tree
+
 echo "*** DONE"

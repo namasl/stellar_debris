@@ -464,21 +464,33 @@ curl http://localhost:8096
 # Stage 5 of example
 ################################################################################
 
-echo "*** Check that reported number of EdgePLacement objects on common is 2"
+echo "*** Check that reported number of EdgePlacement objects on common is 2"
 #kubectl ws root:my-org:wmw-c
 kubectl ws root:wmw-c
 #kubectl get rs -n commonstuff commond -o yaml | grep 'kubestellar.io/executing-count: "2"' || { kubectl get rs -n commonstuff commond -o yaml; false; }
-kubectl get rs -n commonstuff commond -o yaml | grep 'kubestellar.io/executing-count'
+kubectl get rs -n commonstuff commond -o yaml
 
-echo "*** Check that reported number of EdgePLacement objects on common is 1"
+#echo "*** Check that reported number of EdgePlacement objects on common is 1"
 #kubectl ws root:my-org:wmw-s
-kubectl ws root:wmw-s
+#kubectl ws root:wmw-s
 #kubectl get deploy -n specialstuff speciald -o yaml | grep 'kubestellar.io/executing-count: "1"' || { kubectl get deploy -n specialstuff speciald -o yaml; false; }
-kubectl get deploy -n specialstuff speciald -o yaml | grep 'kubestellar.io/executing-count'
+#kubectl get deploy -n specialstuff speciald -o yaml
 
 echo "*** Check status section of speciald Deployment"
+kubectl ws root:wmw-s
 kubectl get deploy -n specialstuff speciald -o yaml
 #kubectl get deploy -n specialstuff speciald -o yaml | grep 'readyReplicas: 1'
-kubectl get deploy -n specialstuff speciald -o yaml | grep 'readyReplicas'
+
+echo "*** Check wmw-c EdgePlacement"
+kubectl ws root:wmw-c
+kubectl get EdgePlacement -o yaml
+
+echo "*** Check wmw-s EdgePlacement"
+kubectl ws root:wmw-s
+kubectl get EdgePlacement -o yaml
+
+echo "*** Show workspace structure"
+kubectl ws root
+kubectl ws tree
 
 echo "*** DONE"
