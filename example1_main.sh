@@ -64,8 +64,8 @@ export KUBECONFIG=$WORKING_DIR/.kcp/admin.kubeconfig
 screen -d -m -S kcp
 screen -S kcp -p 0 -X stuff "kcp start^M"
 echo "*** Wait for KCP to start"
-# test that KCP is running; once ws resource is available, exit code will be zero
-while ! kubectl ws tree 2> /dev/null; do
+# test that KCP is ready by continuing once ws resource is available
+while ! kubectl ws tree &> /dev/null; do
   sleep 10
 done
 
@@ -89,8 +89,13 @@ echo '*** Run mailbox-controller in screen session "mbx"'
 echo "************************************************************************"
 screen -d -m -S mbx
 screen -S mbx -p 0 -X stuff "kubectl ws root:espw; mailbox-controller -v=2^M"
-echo "*** Wait 60 seconds, starting at $(date)"
-sleep 60
+echo "*** Waiting for mailboxes, starting at $(date)"
+# continue once workspaces for both mailboxes show up
+sleep 10
+kubectl ws root
+while [ $(kubectl ws tree | grep "── .\+$" | wc -l) -ne 6 ]; do
+  sleep 10
+done
 
 echo "*** Show mailbox workspaces"
 kubectl ws root
@@ -354,8 +359,14 @@ echo "************************************************************************"
 export KUBECONFIG=$WORKING_DIR/.kcp/admin.kubeconfig
 screen -d -m -S wr
 screen -S wr -p 0 -X stuff "kubectl ws root:espw; kubestellar-where-resolver^M"
-echo "*** Wait 45 seconds, starting at $(date)"
-sleep 45
+echo "*** Wait for where resolver, starting at $(date)"
+# test that where-resolver is ready by continuing once SinglePlacementSlice
+# resource is available
+sleep 10
+kubectl ws root:wmw-c
+while ! kubectl get SinglePlacementSlice &> /dev/null; do
+  sleep 10
+done
 
 echo "*** Look at SinglePLacementSlice objects in wmw-c"
 kubectl ws root:wmw-c
@@ -371,8 +382,38 @@ echo "************************************************************************"
 export KUBECONFIG=$WORKING_DIR/.kcp/admin.kubeconfig
 screen -d -m -S pt
 screen -S pt -p 0 -X stuff "kubectl ws root:espw; placement-translator^M"
-echo "*** Wait 120 seconds, starting at $(date)"
-sleep 120
+echo "*** Wait for placement-translator, starting at $(date)"
+# test that placement-translator is ready by checking each mailbox workspace
+sleep 10
+mbxws=($FLORIN_WS $GUILDER_WS)
+for ii in "${mbxws[@]}"; do
+  kubectl ws root:$ii
+  # wait for SyncerConfig resource
+  while ! kubectl get SyncerConfig the-one &> /dev/null; do
+    sleep 10
+  done
+  echo "SyncerConfig resource exists"
+  # wait for ReplicaSet resource
+  while ! kubectl get rs &> /dev/null; do
+    sleep 10
+  done
+  echo "ReplicaSet resource exists"
+  # wait until ReplicaSet running
+  while [ $(kubectl get replicaset -A | grep commonstuff | sed -e 's/ \+/ /g' | cut -d " " -f 5) -lt 1 ]; do
+    sleep 10
+  done
+  echo "ReplicaSet running"
+  echo 
+done
+# check for deployment in guilder
+while ! kubectl get deploy -A &> /dev/null; do
+  sleep 10
+done
+echo "Deployment resource exists"
+while [ $(kubectl get deploy -A | grep specialstuff | sed -e 's/ \+/ /g' | cut -d " " -f 5) -lt 1 ]; do
+  sleep 10
+done
+echo "Deployment running"
 
 echo "*** Examine florin's SyncerConfig"
 kubectl ws root
