@@ -93,7 +93,7 @@ echo "*** Wait 60 seconds, starting at $(date)"
 sleep 60
 
 echo "*** Show mailbox workspaces"
-kubectl ws root
+kubectl ws root:espw
 kubectl get Workspaces
 
 kubectl get Workspace -o "custom-columns=NAME:.metadata.name,SYNCTARGET:.metadata.annotations['edge\.kubestellar\.io/sync-target-name'],CLUSTER:.spec.cluster"
