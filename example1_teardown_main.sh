@@ -19,7 +19,7 @@ GUILDER_WS=$(kubectl get Workspace -o json | jq -r '.items | .[] | .metadata | s
 FLORIN_WS=$(kubectl get Workspace -o json | jq -r '.items | .[] | .metadata | select(.annotations ["edge.kubestellar.io/sync-target-name"] == "florin") | .name')
 
 kubectl ws root
-kubectl delete workspace example-imw
+kubectl delete workspace imw-1
 kubectl delete workspace $FLORIN_WS
 kubectl delete workspace $GUILDER_WS
 kubectl kubestellar remove wmw wmw-c
