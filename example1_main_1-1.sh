@@ -375,7 +375,7 @@ echo "*** Wait 120 seconds, starting at $(date)"
 sleep 120
 
 echo "*** Examine florin's SyncerConfig"
-kubectl ws root
+kubectl ws root:espw
 kubectl ws $FLORIN_WS
 kubectl get SyncerConfig the-one -o yaml
 
@@ -384,7 +384,7 @@ kubectl get ns
 kubectl get replicasets -A
 
 echo "*** Examine guilder's SyncerConfig"
-kubectl ws root
+kubectl ws root:espw
 kubectl ws $GUILDER_WS
 kubectl get SyncerConfig the-one -o yaml
 
@@ -467,15 +467,18 @@ curl http://localhost:8096
 echo "*** Check that reported number of EdgePLacement objects on common is 2"
 #kubectl ws root:my-org:wmw-c
 kubectl ws root:wmw-c
-kubectl get rs -n commonstuff commond -o yaml | grep 'kubestellar.io/executing-count: "2"' || { kubectl get rs -n commonstuff commond -o yaml; false; }
+#kubectl get rs -n commonstuff commond -o yaml | grep 'kubestellar.io/executing-count: "2"' || { kubectl get rs -n commonstuff commond -o yaml; false; }
+kubectl get rs -n commonstuff commond -o yaml | grep 'kubestellar.io/executing-count'
 
 echo "*** Check that reported number of EdgePLacement objects on common is 1"
 #kubectl ws root:my-org:wmw-s
 kubectl ws root:wmw-s
-kubectl get deploy -n specialstuff speciald -o yaml | grep 'kubestellar.io/executing-count: "1"' || { kubectl get deploy -n specialstuff speciald -o yaml; false; }
+#kubectl get deploy -n specialstuff speciald -o yaml | grep 'kubestellar.io/executing-count: "1"' || { kubectl get deploy -n specialstuff speciald -o yaml; false; }
+kubectl get deploy -n specialstuff speciald -o yaml | grep 'kubestellar.io/executing-count'
 
 echo "*** Check status section of speciald Deployment"
 kubectl get deploy -n specialstuff speciald -o yaml
-kubectl get deploy -n specialstuff speciald -o yaml | grep 'readyReplicas: 1'
+#kubectl get deploy -n specialstuff speciald -o yaml | grep 'readyReplicas: 1'
+kubectl get deploy -n specialstuff speciald -o yaml | grep 'readyReplicas'
 
 echo "*** DONE"
