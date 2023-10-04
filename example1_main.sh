@@ -403,7 +403,6 @@ for ii in "${mbxws[@]}"; do
     sleep 10
   done
   echo "commonstuff ReplicaSet running"
-  echo 
 done
 # check for deployment in guilder
 while ! kubectl get deploy -A &> /dev/null; do
