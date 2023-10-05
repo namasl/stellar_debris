@@ -226,6 +226,7 @@ spec:
     resources: [ apibindings ]
     namespaceSelectors: []
     objectNames: [ "bind-kubernetes", "bind-apps" ]
+  wantSingletonReportedState: true
   upsync:
   - apiGroup: "group1.test"
     resources: ["sprockets", "flanges"]
@@ -338,6 +339,7 @@ spec:
     resources: [ apibindings ]
     namespaceSelectors: []
     objectNames: [ "bind-kubernetes", "bind-apps" ]
+  wantSingletonReportedState: true
   upsync:
   - apiGroup: "group1.test"
     resources: ["sprockets", "flanges"]
