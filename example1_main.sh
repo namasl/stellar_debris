@@ -93,7 +93,7 @@ echo "*** Waiting for mailboxes, starting at $(date)"
 # continue once workspaces for both mailboxes show up
 sleep 10
 kubectl ws root
-while [ $(kubectl ws tree | grep "── .\+$" | wc -l) -ne 6 ]; do
+while [ $(kubectl ws tree | grep "-mb-" | wc -l) -ne 2 ]; do
   sleep 10
 done
 
@@ -367,6 +367,10 @@ kubectl ws root:wmw-c
 while ! kubectl get SinglePlacementSlice &> /dev/null; do
   sleep 10
 done
+kubectl ws root:wmw-s
+while ! kubectl get SinglePlacementSlice &> /dev/null; do
+  sleep 10
+done
 
 echo "*** Look at SinglePLacementSlice objects in wmw-c"
 kubectl ws root:wmw-c
@@ -399,7 +403,7 @@ for ii in "${mbxws[@]}"; do
   done
   echo "ReplicaSet resource exists"
   # wait until ReplicaSet running
-  while [ $(kubectl get replicaset -A | grep commonstuff | sed -e 's/ \+/ /g' | cut -d " " -f 5) -lt 1 ]; do
+  while [ $(kubectl get rs -n commonstuff | tail -1 | sed -e 's/ \+/ /g' | cut -d " " -f 4) -lt 1 ]; do
     sleep 10
   done
   echo "commonstuff ReplicaSet running"
@@ -409,7 +413,7 @@ while ! kubectl get deploy -A &> /dev/null; do
   sleep 10
 done
 echo "Deployment resource exists"
-while [ $(kubectl get deploy -A | grep specialstuff | sed -e 's/ \+/ /g' | cut -d " " -f 5) -lt 1 ]; do
+while [ $(kubectl get deploy -n specialstuff | tail -1 | sed -e 's/ \+/ /g' | cut -d " " -f 4) -lt 1 ]; do
   sleep 10
 done
 echo "specialstuff Deployment running"
