@@ -106,7 +106,7 @@ echo "*** Install Kubestellar core with Helm"
 helm repo add kubestellar https://helm.kubestellar.io
 helm repo update
 KUBECONFIG=$WORKING_DIR/.kube/config helm install kubestellar/kubestellar-core \
-  --set EXTERNAL_HOSTNAME=$HN \
+  --set EXTERNAL_HOSTNAME="$HN" \
   --set EXTERNAL_PORT=1119 \
   --namespace kubestellar \
   --generate-name
